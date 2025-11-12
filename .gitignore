@@ -1,0 +1,12 @@
+# Git configuration for Gravitate-Health Focusing SDK
+
+*.pem
+*.key
+.env
+.env.local
+.env.*.local
+node_modules/
+dist/
+build/
+.DS_Store
+Thumbs.db

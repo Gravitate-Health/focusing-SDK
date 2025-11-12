@@ -1,0 +1,213 @@
+version: '3.8'
+
+# Gravitate-Health FOSPS Development Environment
+# A local deployment of the Federated Open Source Platform and Services
+# for developing Lenses and Preprocessors (pluggable components of the focusing mechanism)
+
+services:
+  # ============================================================================
+  # CORE FOCUSING SERVICES
+  # ============================================================================
+
+  # Focusing Manager - Central orchestration service that coordinates
+  # between preprocessors and lens providers
+  focusing-manager:
+    container_name: focusing-manager
+    image: ghcr.io/gravitate-health/focuing-manager:latest
+    ports:
+      - "8080:3000"
+    environment:
+      # Configuration for the focusing manager
+      ENVIRONMENT: dev
+      PREPROCESSING_LABEL_SELECTOR: eu.gravitate-health.fosps.preprocessing=true
+      FOCUSING_LABEL_SELECTOR: eu.gravitate-health.fosps.focusing=true
+      FHIR_IPS_URL:
+      FHIR_EPI_URL:
+      PROFILE_URL:
+    networks:
+      - focusing-network
+    depends_on:
+      - fhir-emulator
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
+  # ============================================================================
+  # FHIR DATA SERVICES
+  # ============================================================================
+
+  # FHIR Emulator - Provides FHIR API endpoints with data from Patients and ePIs folders
+  fhir-emulator:
+    container_name: fhir-emulator
+    image: ghcr.io/gravitate-health/fhir-emulator:latest
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: development
+      LOG_LEVEL: INFO
+      # Paths to FHIR data
+      FILES_DIR: /data
+
+    networks:
+      - focusing-network
+    volumes:
+      # Mount local FHIR data folders
+      - ./Patients:/data/Patient:ro
+      - ./ePIs:/data/Bundle:ro
+    restart: unless-stopped
+
+  # ============================================================================
+  # Terminology SERVICE
+  # ============================================================================
+
+  # Terminology Server - Provides FHIR Terminology services (CodeSystem, ValueSet, etc.)
+  terminology-server:
+    container_name: terminology-server
+    image: ghcr.io/gravitate-health/terminology-server:latest
+    networks:
+      - focusing-network
+    restart: unless-stopped
+
+
+  # ============================================================================
+  # PREPROCESSOR SERVICES
+  # Preprocessors are pluggable components that transform/enrich FHIR data
+  # They use labels for automatic discovery by the focusing manager
+  # ============================================================================
+
+  # MVP2 Preprocessor - Production-grade preprocessor implementation
+  # Labels identify this service to the focusing manager
+  mvp2-preprocessor:
+    container_name: mvp2-preprocessor
+    image: ghcr.io/gravitate-health/preprocessing-service-mvp2:latest
+    environment:
+      ENVIRONMENT: dev
+      TERM_SERVER_URL: http://terminology-server:3000
+    networks:
+      - focusing-network
+    depends_on:
+      - terminology-server
+    restart: unless-stopped
+    # Service discovery labels - used by focusing manager to detect this preprocessor
+    labels:
+      eu.gravitate-health.fosps.preprocessing: true
+
+  # ============================================================================
+  # LENS PROVIDER SERVICES
+  # Lens providers discover and expose FHIR Library components (Lenses)
+  # They use labels for automatic discovery by the focusing manager
+  # ============================================================================
+
+  # Folder-Based Lens Provider - Discovers lenses from the local Lenses folder
+  # (Currently not developed, but structure is ready for implementation)
+  # folder-lens-provider:
+  #   container_name: folder-lens-provider
+  #   image: gravitatehealth/folder-lens-provider:latest
+  #   environment:
+  #     LENSES_PATH: /data/lenses
+  #   networks:
+  #     - focusing-network
+  #   volumes:
+  #     # Mount local lenses folder
+  #     - ./Lenses:/data/lenses:ro
+  #   restart: unless-stopped
+  #   # Service discovery labels - used by focusing manager to detect this provider
+  #   labels:
+  #     eu.gravitate-health.fosps.focusing: true
+
+  # Git-Based Lens Provider - Example 1: Generic lens repository
+  # Uncomment and configure to enable
+  # NOTE: Configure as needed for your specific lens repositories
+  # git-lens-provider-example:
+  #   container_name: git-lens-provider-example
+  #   image: gravitatehealth/git-lens-provider:latest
+  #   environment:
+  #     NODE_ENV: development
+  #     LOG_LEVEL: INFO
+  #     GIT_REPOSITORY_URL: https://github.com/gravitate-health/example-lens-repo.git
+  #     GIT_BRANCH: main
+  #   networks:
+  #     - focusing-network
+  #   restart: unless-stopped
+  #   labels:
+  #      eu.gravitate-health.fosps.focusing: true
+
+  # ============================================================================
+  # TESTING & INSPECTION SERVICES
+  # ============================================================================
+
+  # Focusing Inspector - Web UI for testing and validating the focusing process
+  # Provides interactive testing interface for developers
+  focusing-inspector:
+    container_name: focusing-inspector
+    image: ghcr.io/gravitate-health/focusing-inspector:latest
+    ports:
+      - "4200:3000"
+    environment:
+      ENVIRONMENT: dev
+      BACKEND_ENDPOINT: http://localhost:8080
+    networks:
+      - focusing-network
+    depends_on:
+      - focusing-manager
+    restart: unless-stopped
+
+  # Swagger UI - API documentation and testing interface
+  # Exposes the focusing manager's OpenAPI specification
+  # TODO: overide servers to point to localhost
+  swagger-ui:
+    container_name: swagger-ui
+    image: swaggerapi/swagger-ui:latest
+    ports:
+      - "8888:8080"
+    environment:
+      URLS: "[{\"url\": \"https://raw.githubusercontent.com/Gravitate-Health/focusing-manager/main/openapi.yaml\", \"name\": \"Focusing Manager API\"}]"
+      SWAGGERUI_DOCEXPANSION: list
+      SWAGGERUI_DEFAULT_MODELS_EXPAND_DEPTH: 1
+    networks:
+      - focusing-network
+    depends_on:
+      - focusing-manager
+    restart: unless-stopped
+
+networks:
+  focusing-network:
+    driver: bridge
+    name: focusing-network
+
+# ============================================================================
+# NOTES FOR DEVELOPERS
+# ============================================================================
+#
+# ADDING A NEW LENS PROVIDER:
+# 1. copy-and-paste the git-lens-provider-example section above
+# 2. Update the service name, container_name, GIT_REPOSITORY_URL, and other varuiables pointing to your development lens repository
+# 3. Run: docker-compose up -d <service name>
+#
+# REMOVING A SERVICE:
+# Simply comment out the service section or delete it, then run:
+#   docker-compose up -d
+#
+# VIEWING LOGS:
+# docker-compose logs -f <service-name>
+# Example: docker-compose logs -f focusing-manager
+#
+# REBUILDING IMAGES:
+# docker-compose build --no-cache
+#
+# RESETTING EVERYTHING:
+# docker-compose down -v  # Removes containers and volumes
+#
+# SERVICE DISCOVERY:
+# The focusing manager automatically discovers services using container labels:
+# - Preprocessors: eu.gravitate-health.fosps.preprocessing=true
+# - Lens Providers: eu.gravitate-health.fosps.focusing=true
+#
+# ACCESSING SERVICES FROM HOST:
+# - Focusing Manager API: http://localhost:8080
+# - FHIR Emulator: http://localhost:3000/fhir
+# - Focusing Inspector: http://localhost:4200
+# - Swagger UI: http://localhost:8888
+# - Services within network: http://<service-name>:<port>
+#
+# ============================================================================
