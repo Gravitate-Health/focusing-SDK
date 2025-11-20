@@ -173,17 +173,19 @@ services:
     restart: unless-stopped
 
   # Swagger UI - API documentation and testing interface
-  # Exposes the focusing manager's OpenAPI specification
-  # TODO: overide servers to point to localhost
+  # Exposes the focusing manager's OpenAPI specification from local openapi.yaml
   swagger-ui:
     container_name: swagger-ui
     image: swaggerapi/swagger-ui:latest
     ports:
       - "8888:8080"
     environment:
-      URLS: "[{\"url\": \"https://raw.githubusercontent.com/Gravitate-Health/focusing-manager/main/openapi.yaml\", \"name\": \"Focusing Manager API\"}]"
+      # Use local openapi.yaml mounted to /openapi.yaml
+      URL: /openapi.yaml
       SWAGGERUI_DOCEXPANSION: list
       SWAGGERUI_DEFAULT_MODELS_EXPAND_DEPTH: 1
+    volumes:
+      - ./openapi.yaml:/usr/share/nginx/html/openapi.yaml:ro
     networks:
       - focusing-network
     depends_on:
