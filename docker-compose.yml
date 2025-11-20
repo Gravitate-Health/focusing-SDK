@@ -86,6 +86,20 @@ services:
     labels:
       eu.gravitate-health.fosps.preprocessing: true
 
+  # Preprocessor example - Use as a template for building custom preprocessors
+  # Labels identify this service to the focusing manager
+  # my-preprocessor:
+  #   container_name: my-preprocessor
+  #   image: <your-custom-preprocessor-image>
+  #   environment:
+  #     ENVIRONMENT: dev
+  #   networks:
+  #     - focusing-network
+  #   restart: unless-stopped
+  #   # Service discovery labels - used by focusing manager to detect this preprocessor
+  #   labels:
+  #     eu.gravitate-health.fosps.preprocessing: true
+
   # ============================================================================
   # LENS SELECTOR SERVICES
   # Lens selectos discover and expose FHIR Library components (Lenses)
