@@ -14,8 +14,6 @@ services:
   focusing-manager:
     container_name: focusing-manager
     image: ghcr.io/gravitate-health/focuing-manager:latest
-    ports:
-      - "8080:3000"
     environment:
       # Configuration for the focusing manager
       ENVIRONMENT: standalone
@@ -40,14 +38,10 @@ services:
   fhir-emulator:
     container_name: fhir-emulator
     image: ghcr.io/gravitate-health/fhir-emulator:latest
-    ports:
-      - "5000:5000"
     environment:
       NODE_ENV: development
       LOG_LEVEL: INFO
-      # Paths to FHIR data
       FILES_DIR: /data
-
     networks:
       - focusing-network
     volumes:
@@ -161,7 +155,7 @@ services:
     networks:
       - focusing-network
     depends_on:
-      - focusing-manager
+      - nginx-proxy
     restart: unless-stopped
 
   # Swagger UI - API documentation and testing interface
@@ -181,6 +175,25 @@ services:
     depends_on:
       - focusing-manager
     restart: unless-stopped
+
+# ============================================================================
+# REVERSE PROXY SERVICE
+# ============================================================================
+# Uses nginx to route external requests to internal services
+# No need to modify this unless you want custom routing rules
+  nginx-proxy:
+    container_name: nginx-proxy
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    networks:
+      - focusing-network
+    depends_on:
+      - focusing-manager
+      - fhir-emulator
+    restart: unless-stopped
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
 
 networks:
   focusing-network:
@@ -216,8 +229,7 @@ networks:
 # - Lens Selectors: eu.gravitate-health.fosps.focusing=true
 #
 # ACCESSING SERVICES FROM HOST:
-# - Focusing Manager API: http://localhost:8080
-# - FHIR Emulator: http://localhost:3000/fhir
+# - Focusing Manager API: http://localhost:8080/focusing
 # - Focusing Inspector: http://localhost:4200
 # - Swagger UI: http://localhost:8888
 # - Services within network: http://<service-name>:<port>
