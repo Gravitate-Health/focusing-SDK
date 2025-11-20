@@ -10,7 +10,7 @@ services:
   # ============================================================================
 
   # Focusing Manager - Central orchestration service that coordinates
-  # between preprocessors and lens providers
+  # between preprocessors and lens selectors
   focusing-manager:
     container_name: focusing-manager
     image: ghcr.io/gravitate-health/focuing-manager:latest
@@ -18,7 +18,7 @@ services:
       - "8080:3000"
     environment:
       # Configuration for the focusing manager
-      ENVIRONMENT: dev
+      ENVIRONMENT: standalone
       PREPROCESSING_LABEL_SELECTOR: eu.gravitate-health.fosps.preprocessing=true
       FOCUSING_LABEL_SELECTOR: eu.gravitate-health.fosps.focusing=true
       FHIR_IPS_URL:
@@ -93,44 +93,56 @@ services:
       eu.gravitate-health.fosps.preprocessing: true
 
   # ============================================================================
-  # LENS PROVIDER SERVICES
-  # Lens providers discover and expose FHIR Library components (Lenses)
+  # LENS SELECTOR SERVICES
+  # Lens selectos discover and expose FHIR Library components (Lenses)
   # They use labels for automatic discovery by the focusing manager
   # ============================================================================
 
-  # Folder-Based Lens Provider - Discovers lenses from the local Lenses folder
-  # (Currently not developed, but structure is ready for implementation)
-  # folder-lens-provider:
-  #   container_name: folder-lens-provider
-  #   image: gravitatehealth/folder-lens-provider:latest
-  #   environment:
-  #     LENSES_PATH: /data/lenses
-  #   networks:
-  #     - focusing-network
-  #   volumes:
-  #     # Mount local lenses folder
-  #     - ./Lenses:/data/lenses:ro
-  #   restart: unless-stopped
-  #   # Service discovery labels - used by focusing manager to detect this provider
-  #   labels:
-  #     eu.gravitate-health.fosps.focusing: true
+  # Folder-Based Lens selector - Discovers lenses from the local Lenses folder
+  lens-selector-file:
+     container_name: lens-selector-file
+     image: ghcr.io/gravitate-health/lens-selector-file:latest
+     environment:
+        NODE_ENV: development
+     networks:
+       - focusing-network
+     volumes:
+      # Mount local lenses folder, but you can modify to point to your development environment
+       - ./Lenses:/data/lenses:ro
+     restart: unless-stopped
+     # Service discovery labels - used by focusing manager to detect this selector
+     labels:
+       eu.gravitate-health.fosps.focusing: true
 
-  # Git-Based Lens Provider - Example 1: Generic lens repository
+  # Git-Based Lens Selectors
   # Uncomment and configure to enable
-  # NOTE: Configure as needed for your specific lens repositories
-  # git-lens-provider-example:
-  #   container_name: git-lens-provider-example
-  #   image: gravitatehealth/git-lens-provider:latest
-  #   environment:
-  #     NODE_ENV: development
-  #     LOG_LEVEL: INFO
-  #     GIT_REPOSITORY_URL: https://github.com/gravitate-health/example-lens-repo.git
-  #     GIT_BRANCH: main
-  #   networks:
-  #     - focusing-network
-  #   restart: unless-stopped
-  #   labels:
-  #      eu.gravitate-health.fosps.focusing: true
+  # NOTE: Configure as needed for your specific lens repositories, comment out or delete if not needed
+  conditions-git-lens-selector:
+    container_name: conditions-git-lens-selector
+    image: ghcr.io/gravitate-health/lens-selector-git:latest
+    environment:
+      # you can modify these variables to point to your development lens repository
+      GIT_REPO_URL: https://github.com/Gravitate-Health/conditions-lens.git
+      GIT_BRANCH: main
+      CACHE_TTL_MINUTES: 10 # lower this if repo is actively developing lenses
+    networks:
+      - focusing-network
+    restart: unless-stopped
+    labels:
+       eu.gravitate-health.fosps.focusing: true
+
+  pregnancy-git-lens-selector:
+    container_name: pregnancy-git-lens-selector
+    image: ghcr.io/gravitate-health/lens-selector-git:latest
+    environment:
+      GIT_REPO_URL: https://github.com/Gravitate-Health/pregnancy-lens.git
+      CACHE_TTL_MINUTES: 10 
+    networks:
+      - focusing-network
+    restart: unless-stopped
+    labels:
+      eu.gravitate-health.fosps.focusing: true
+
 
   # ============================================================================
   # TESTING & INSPECTION SERVICES
@@ -179,8 +191,8 @@ networks:
 # NOTES FOR DEVELOPERS
 # ============================================================================
 #
-# ADDING A NEW LENS PROVIDER:
-# 1. copy-and-paste the git-lens-provider-example section above
+# ADDING A NEW LENS SELECTOR:
+# 1. copy-and-paste the lens-selector-git and/or lens-selector-file sections
 # 2. Update the service name, container_name, GIT_REPOSITORY_URL, and other varuiables pointing to your development lens repository
 # 3. Run: docker-compose up -d <service name>
 #
@@ -201,7 +213,7 @@ networks:
 # SERVICE DISCOVERY:
 # The focusing manager automatically discovers services using container labels:
 # - Preprocessors: eu.gravitate-health.fosps.preprocessing=true
-# - Lens Providers: eu.gravitate-health.fosps.focusing=true
+# - Lens Selectors: eu.gravitate-health.fosps.focusing=true
 #
 # ACCESSING SERVICES FROM HOST:
 # - Focusing Manager API: http://localhost:8080
