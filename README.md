@@ -18,7 +18,7 @@ This development environment provides a complete, containerized setup of the Gra
 
 - **Docker** and **Docker Compose** installed
 - At least 8GB RAM available
-- Port availability: 3000, 4200, 8080, 8888 (configurable in `docker-compose.yml`)
+- Port availability: 4200, 8080, 8888 (configurable in `docker-compose.yml`)
 
 ### Starting the Environment
 

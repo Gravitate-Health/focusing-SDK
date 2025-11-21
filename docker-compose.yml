@@ -17,8 +17,8 @@ services:
     environment:
       # Configuration for the focusing manager
       ENVIRONMENT: standalone
-      PREPROCESSING_LABEL_SELECTOR: eu.gravitate-health.fosps.preprocessing=true
-      FOCUSING_LABEL_SELECTOR: eu.gravitate-health.fosps.focusing=true
+      PREPROCESSING_LABEL_SELECTOR: eu.gravitate-health.fosps.preprocessing=True
+      FOCUSING_LABEL_SELECTOR: eu.gravitate-health.fosps.focusing=True
       FHIR_IPS_URL:
       FHIR_EPI_URL:
       PROFILE_URL:
@@ -84,7 +84,7 @@ services:
     restart: unless-stopped
     # Service discovery labels - used by focusing manager to detect this preprocessor
     labels:
-      eu.gravitate-health.fosps.preprocessing: true
+      eu.gravitate-health.fosps.preprocessing: True
 
   # Preprocessor example - Use as a template for building custom preprocessors
   # Labels identify this service to the focusing manager
@@ -98,7 +98,7 @@ services:
   #   restart: unless-stopped
   #   # Service discovery labels - used by focusing manager to detect this preprocessor
   #   labels:
-  #     eu.gravitate-health.fosps.preprocessing: true
+  #     eu.gravitate-health.fosps.preprocessing: True
 
   # ============================================================================
   # LENS SELECTOR SERVICES
@@ -116,11 +116,11 @@ services:
        - focusing-network
      volumes:
       # Mount local lenses folder, but you can modify to point to your development environment
-       - ./Lenses:/data/lenses:ro
+       - ./Lenses:/app/lenses:ro
      restart: unless-stopped
      # Service discovery labels - used by focusing manager to detect this selector
      labels:
-       eu.gravitate-health.fosps.focusing: true
+       eu.gravitate-health.fosps.focusing: True
 
   # Git-Based Lens Selectors
   # Uncomment and configure to enable
@@ -137,7 +137,7 @@ services:
       - focusing-network
     restart: unless-stopped
     labels:
-       eu.gravitate-health.fosps.focusing: true
+       eu.gravitate-health.fosps.focusing: True
 
   pregnancy-git-lens-selector:
     container_name: pregnancy-git-lens-selector
@@ -149,7 +149,7 @@ services:
       - focusing-network
     restart: unless-stopped
     labels:
-      eu.gravitate-health.fosps.focusing: true
+      eu.gravitate-health.fosps.focusing: True
 
 
   # ============================================================================
@@ -241,8 +241,8 @@ networks:
 #
 # SERVICE DISCOVERY:
 # The focusing manager automatically discovers services using container labels:
-# - Preprocessors: eu.gravitate-health.fosps.preprocessing=true
-# - Lens Selectors: eu.gravitate-health.fosps.focusing=true
+# - Preprocessors: eu.gravitate-health.fosps.preprocessing=True
+# - Lens Selectors: eu.gravitate-health.fosps.focusing=True
 #
 # ACCESSING SERVICES FROM HOST:
 # - Focusing Manager API: http://localhost:8080/focusing
