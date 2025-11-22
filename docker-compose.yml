@@ -162,7 +162,7 @@ services:
     container_name: focusing-inspector
     image: ghcr.io/gravitate-health/focusing-inspector:latest
     ports:
-      - "4200:3000"
+      - "4200:80"
     environment:
       ENVIRONMENT: dev
       BACKEND_ENDPOINT: http://localhost:8080
