@@ -54,10 +54,10 @@ services:
   # Terminology SERVICE
   # ============================================================================
 
-  # Terminology Server - Provides FHIR Terminology services (CodeSystem, ValueSet, etc.)
-  terminology-server:
-    container_name: terminology-server
-    image: ghcr.io/gravitate-health/terminology-server:latest
+  # Terminology service - Provides FHIR Terminology services (CodeSystem, ValueSet, etc.)
+  terminology-service:
+    container_name: terminology-service
+    image: ghcr.io/gravitate-health/terminology-service:latest
     networks:
       - focusing-network
     restart: unless-stopped
