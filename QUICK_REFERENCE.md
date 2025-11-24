@@ -51,9 +51,8 @@ docker-compose logs <svc> | grep ERROR   # Search logs
 
 ### Testing
 ```bash
-curl http://localhost:8080/api/lenses          # List lenses
-curl http://localhost:8080/api/preprocessors   # List preprocessors
-curl http://localhost:3000/fhir/metadata       # FHIR capability
+curl http://localhost:8080/focusing/lenses          # List lenses
+curl http://localhost:8080/focusing/preprocessors   # List preprocessors
 ```
 
 ## 📁 Folder Structure
@@ -72,7 +71,7 @@ curl http://localhost:3000/fhir/metadata       # FHIR capability
 # 1. Uncomment git-lens-provider-example in docker-compose.yml
 # 2. Update GIT_REPOSITORY_URL
 # 3. Run: docker-compose up -d git-lens-provider-example
-# 4. Verify: curl http://localhost:8080/api/lenses
+# 4. Verify: curl http://localhost:8080/focusing/lenses
 ```
 
 ### Quick Example: Add FHIR Data
@@ -80,8 +79,6 @@ curl http://localhost:3000/fhir/metadata       # FHIR capability
 ```bash
 # 1. Create valid FHIR Bundle JSON
 # 2. Place in Patients/, ePIs/, or Lenses/
-# 3. Restart provider: docker-compose restart fhir-emulator
-# 4. Test: curl http://localhost:3000/fhir/<ResourceType>
 ```
 
 ## 🔍 Service Discovery Labels
@@ -91,15 +88,11 @@ Services auto-discover using Docker labels:
 ```yaml
 # For Preprocessors
 labels:
-  com.gravitatehealth.type: preprocessor
-  com.gravitatehealth.preprocessor.name: my-preprocessor
-  com.gravitatehealth.preprocessor.capabilities: capability1,capability2
+   eu.gravitate-health.fosps.preprocessing: True
 
 # For Lens Providers
 labels:
-  com.gravitatehealth.type: lens-provider
-  com.gravitatehealth.lens-provider.name: my-lenses
-  com.gravitatehealth.lens-provider.source: file-system
+  eu.gravitate-health.fosps.focusing: True
 ```
 
 ## 📝 File Guide
@@ -108,28 +101,10 @@ labels:
 |------|------|---------|
 | `README.md` | ~600 lines | Full documentation |
 | `QUICKSTART.md` | ~200 lines | 5-min start guide |
-| `DEVELOPMENT.md` | ~600 lines | Dev guidelines |
 | `docker-compose.yml` | ~272 lines | Services config |
 | `Patients/README.md` | ~150 lines | Patient data guide |
 | `ePIs/README.md` | ~150 lines | Product data guide |
 | `Lenses/README.md` | ~300 lines | Lens dev guide |
-
-## ⚙️ Configuration
-
-### Environment Variables
-Create `.env` from `.env.example`:
-```bash
-cp .env.example .env
-# Edit as needed
-docker-compose --env-file .env up -d
-```
-
-### Common Settings
-```bash
-LOG_LEVEL=INFO                              # DEBUG, INFO, WARN, ERROR
-FOCUSING_MANAGER_DISCOVERY_INTERVAL=30s    # Service scan frequency
-INSPECTOR_FOCUSING_MANAGER_URL=http://localhost:8080
-```
 
 ## 🐛 Troubleshooting Quick Fixes
 
@@ -140,86 +115,3 @@ INSPECTOR_FOCUSING_MANAGER_URL=http://localhost:8080
 | Can't access Inspector | Wait 30s and refresh, check `docker-compose ps` |
 | Data not loading | Check volumes: `docker inspect <container>` |
 | Services not discovered | Check labels: `docker inspect <container> \| grep gravitatehealth` |
-
-## 🚀 Development Workflow
-
-```
-1. Start environment
-   docker-compose up -d
-
-2. Add/modify FHIR data
-   - Copy files to Patients/, ePIs/, Lenses/
-
-3. Restart relevant service
-   docker-compose restart fhir-emulator
-   docker-compose restart folder-lens-provider
-
-4. Test in Inspector
-   http://localhost:4200
-
-5. Review logs for errors
-   docker-compose logs -f
-```
-
-## 📊 API Quick Reference
-
-### List Resources
-```bash
-curl http://localhost:8080/api/lenses
-curl http://localhost:8080/api/preprocessors
-curl http://localhost:3000/fhir/Patient
-curl http://localhost:3000/fhir/Medication
-```
-
-### Submit for Focusing
-```bash
-curl -X POST http://localhost:8080/api/focus \
-  -H "Content-Type: application/fhir+json" \
-  -d @data.json
-```
-
-### Full API Documentation
-→ http://localhost:8888
-
-## 🔐 Security Notes
-
-- ⚠️ Development environment only
-- ⚠️ No authentication configured
-- ⚠️ Don't expose to internet
-- ⚠️ Use `.env` for secrets (in `.gitignore`)
-
-## 📚 Documentation Map
-
-```
-You are here
-    ↓
-├─ QUICKSTART.md ........................... Start here (5 min)
-├─ README.md .............................. Full documentation
-├─ DEVELOPMENT.md ......................... Dev guidelines
-└─ Folder Guides:
-   ├─ Patients/README.md .................. Patient data
-   ├─ ePIs/README.md ..................... Product data
-   └─ Lenses/README.md ................... Lens development
-```
-
-## ✅ Pre-flight Checklist
-
-- [ ] Docker installed (`docker --version`)
-- [ ] Docker Compose installed (`docker-compose --version`)
-- [ ] 8GB+ RAM available
-- [ ] Ports 3000, 4200, 8080, 8888 available
-- [ ] Internet for initial image pull
-
-## 🎯 Next Steps
-
-1. **5 min**: Read QUICKSTART.md
-2. **10 min**: Start services
-3. **15 min**: Access Inspector at http://localhost:4200
-4. **30 min**: Add sample data to folders
-5. **60 min**: Read full README.md
-6. **2 hrs**: Read DEVELOPMENT.md and add custom components
-
----
-
-**Last Updated**: November 2025
-**Keep this handy during development!** 📌
