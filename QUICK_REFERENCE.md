@@ -67,19 +67,17 @@ curl http://localhost:8080/focusing/preprocessors   # List preprocessors
 
 ### Quick Example: Add a Lens Provider
 
-```bash
-# 1. Uncomment git-lens-provider-example in docker-compose.yml
-# 2. Update GIT_REPOSITORY_URL
-# 3. Run: docker-compose up -d git-lens-provider-example
-# 4. Verify: curl http://localhost:8080/focusing/lenses
-```
+ 1. copy conditions-git-lens-selector and paste in docker-compose.yml
+ 2. Update GIT_REPOSITORY_URL
+ 3. Run: docker-compose up -d git-lens-selector-example
+ 4. Verify: curl http://localhost:8080/focusing/lenses
+
 
 ### Quick Example: Add FHIR Data
 
-```bash
-# 1. Create valid FHIR Bundle JSON
-# 2. Place in Patients/, ePIs/, or Lenses/
-```
+1. Create/download valid FHIR Bundle JSON
+2. Place in Patients/, ePIs/, or Lenses/
+
 
 ## 🔍 Service Discovery Labels
 

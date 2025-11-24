@@ -10,15 +10,6 @@ Lenses are the core of the Gravitate-Health focusing mechanism. They encapsulate
 - Apply clinical reasoning to determine what information is important
 - Present information in a meaningful way to end users
 
-## What are Lenses?
-
-A Lens is a FHIR Library resource (an extension of the Gravitate-Health Lens profile) that contains:
-- **Logic**: CQL (Clinical Quality Language) or FHIRPath expressions
-- **Metadata**: Title, description, version, clinical domain
-- **Purpose**: Target use case (e.g., "Drug-Disease Interaction Checking")
-- **Inputs**: Required FHIR resources (e.g., Patient, Medication)
-- **Outputs**: Focused/highlighted information relevant to the use case
-
 ## File Organization
 
 Recommended structure:
@@ -28,7 +19,10 @@ Lenses/
 ├── contraindications.json           # Lens for contraindications
 ├── drug-drug-interactions.json      # Lens for drug-drug interactions
 ├── adverse-events.json              # Lens for adverse event identification
-├── example-lens.json                # Example Lens template
+├── example-lens.json                # Example complete Lens
+├── Lens-in-Development              # Folder to contain a lens which is being activelly developed
+|  └── mylens.json                   # Lens' metadata (content may be left empty, selector will complete with the code below)
+|  └── mylens.js                     # Lens' code, the selector will automatically bundle the content of this file with the metadata above
 └── README.md                        # This file
 ```
 
@@ -79,7 +73,7 @@ What clinical problem does your lens solve?
 - Patient-specific highlighting
 
 ### Step 2: Define Logic
-Write CQL (Clinical Quality Language) or FHIRPath to:
+Write Java Script function to:
 - Query patient data
 - Retrieve product information
 - Apply clinical rules
@@ -88,92 +82,18 @@ Write CQL (Clinical Quality Language) or FHIRPath to:
 ### Step 3: Package as FHIR Library
 Create a FHIR Library resource with:
 - Clear metadata (title, description, version)
-- Embedded logic (CQL, FHIRPath)
-- Input/output definitions
+- Embedded logic (JS)
 - Versioning information
 
 ### Step 4: Add to Folder
 Place your lens JSON file in this folder with a descriptive name.
 
-### Step 5: Restart Provider
-Restart the folder-based lens provider:
-```bash
-docker-compose restart folder-lens-provider
-```
 
-### Step 6: Verify Discovery
+### Step 5: Verify Discovery
 Check that the lens is discoverable:
 ```bash
-curl http://localhost:8080/api/lenses
+curl http://localhost:8080/focusing/lenses
 ```
-
-## Example Lens Template
-
-```json
-{
-  "resourceType": "Library",
-  "id": "my-custom-lens",
-  "name": "MyCustomLens",
-  "title": "My Custom Lens",
-  "description": "A custom lens for specific clinical reasoning",
-  "version": "1.0.0",
-  "status": "active",
-  "type": {
-    "coding": [{
-      "system": "http://terminology.hl7.org/CodeSystem/library-type",
-      "code": "logic-library"
-    }]
-  },
-  "url": "http://gravitate-health.eu/Library/my-custom-lens",
-  "publisher": "Your Organization",
-  "topic": [{
-    "text": "Your Topic"
-  }],
-  "author": [{
-    "name": "Your Name"
-  }],
-  "content": [{
-    "contentType": "text/cql",
-    "data": "/* CQL Logic Here */"
-  }],
-  "relatedArtifact": [
-    {
-      "type": "depends-on",
-      "resource": "http://hl7.org/fhir/Library/FHIRHelpers"
-    }
-  ],
-  "parameter": [
-    {
-      "name": "Patient",
-      "use": "in",
-      "type": "Patient"
-    },
-    {
-      "name": "Medication",
-      "use": "in",
-      "type": "Medication"
-    },
-    {
-      "name": "FocusedInformation",
-      "use": "out",
-      "type": "Bundle"
-    }
-  ]
-}
-```
-
-## Validation
-
-Validate your lens FHIR syntax:
-
-```bash
-# Inside the FHIR emulator container
-docker-compose exec fhir-emulator npm run validate -- Lenses/my-lens.json
-```
-
-Validate CQL logic:
-- Use the [CQL Testing Framework](http://cql.hl7.org/)
-- Test against sample patient data
 
 ## Integration with Focusing
 
@@ -189,46 +109,6 @@ Validate CQL logic:
 3. Selected lenses are applied to patient/product data
 4. Results are focused/highlighted per lens logic
 5. Focused information is returned to Inspector
-
-### Access via APIs
-```bash
-# List all lenses
-curl http://localhost:8080/api/lenses
-
-# Get specific lens details
-curl http://localhost:8080/api/lenses/drug-disease-interactions
-
-# Apply lens to data
-curl -X POST http://localhost:8080/api/focus \
-  -H "Content-Type: application/fhir+json" \
-  -d @request.json
-```
-
-## Testing Lenses
-
-### Manual Testing via Inspector
-1. Navigate to http://localhost:4200
-2. Load sample patient data
-3. Load sample product information
-4. Select lenses to apply
-5. Review focused results
-
-### Automated Testing
-```bash
-# Example using curl and test data
-curl -X POST http://localhost:8080/api/focus \
-  -H "Content-Type: application/fhir+json" \
-  -H "X-Lens-ID: drug-disease-interactions" \
-  -d @test-patient.json
-```
-
-### Debugging Lens Execution
-Enable detailed logging:
-```bash
-# Update environment in docker-compose.yml
-docker-compose up -d focusing-manager
-docker-compose logs -f focusing-manager
-```
 
 ## Contributing Lenses
 
@@ -248,49 +128,15 @@ docker-compose logs -f focusing-manager
 - Consider performance implications
 - Handle edge cases gracefully
 
-## Advanced: Git-Based Lenses
-
-For lenses stored in GitHub repositories, the Git-based Lens Provider:
-1. Clones the repository
-2. Discovers FHIR Library resources
-3. Reports them to Focusing Manager
-4. Updates on schedule or webhook
-
-To enable (uncomment in docker-compose.yml):
-```yaml
-git-lens-provider-example:
-  image: gravitatehealth/git-lens-provider:latest
-  environment:
-    GIT_REPOSITORY_URL: https://github.com/gravitate-health/lens-repo.git
-  labels:
-    com.gravitatehealth.type: lens-provider
-    # ... other labels
-```
-
 ## Resources
 
 ### FHIR Documentation
 - [FHIR Library Resource](http://hl7.org/fhir/library.html)
 - [FHIR Clinical Reasoning Module](http://hl7.org/fhir/clinicalreasoning-module.html)
 
-### CQL Resources
-- [CQL Specification](https://cql.hl7.org/)
-- [CQL Introduction](https://www.hl7.org/implement/standards/CQL.cfm)
-- [CQL Testing Guide](https://cql.hl7.org/)
-
 ### Gravitate-Health
-- [Lens Profile](https://www.gravitatehealth.eu/deliverables/)
-- [Implementation Guide](https://www.gravitatehealth.eu/deliverables/)
-
-## Next Steps
-
-- [ ] Study existing Gravitate-Health lenses
-- [ ] Understand CQL basics
-- [ ] Design your first lens
-- [ ] Create FHIR Library resource
-- [ ] Add to this folder
-- [ ] Test with sample data
-- [ ] Contribute to Gravitate-Health
+- [Lens Profile](https://build.fhir.org/ig/hl7-eu/gravitate-health/StructureDefinition-lens.html)
+- [Implementation Guide](https://build.fhir.org/ig/hl7-eu/gravitate-health/)
 
 ---
 

@@ -33,7 +33,7 @@ ePIs/
 ## Adding ePI Data
 
 ### Option 1: From Gravitate-Health Samples
-Obtain ePI examples from the [Gravitate-Health FHIR Implementation Guide](https://www.gravitatehealth.eu/deliverables/).
+Obtain ePI examples from the [Gravitate-Health FHIR Implementation Guide](https://build.fhir.org/ig/hl7-eu/gravitate-health/).
 
 ### Option 2: Europeana Medicines API
 The [Europeana Medicines Portal](https://www.ema.europa.eu/en/medicines) provides structured product information.
@@ -41,33 +41,10 @@ The [Europeana Medicines Portal](https://www.ema.europa.eu/en/medicines) provide
 ### Option 3: Create from SmPC
 Convert Summary of Product Characteristics (SmPC) documents to FHIR format.
 
-## Validation
-
-Ensure all files are valid FHIR bundles:
-
-```bash
-# Inside the FHIR emulator container
-docker-compose exec fhir-emulator npm run validate -- /data/epis
-```
 
 ## Usage
 
 The FHIR emulator automatically discovers and loads all JSON files in this folder at startup:
-
-1. Start the environment:
-   ```bash
-   docker-compose up -d
-   ```
-
-2. Verify ePIs are loaded:
-   ```bash
-   curl http://localhost:3000/fhir/Medication
-   ```
-
-3. Access specific ePI:
-   ```bash
-   curl http://localhost:3000/fhir/Medication/aspirin-500mg
-   ```
 
 ## ePI Bundle Structure Example
 
@@ -117,8 +94,9 @@ The FHIR emulator automatically discovers and loads all JSON files in this folde
 
 1. ePI data flows from this folder → FHIR Emulator
 2. Focusing Manager retrieves product information during focusing
-3. Lenses are applied to match patient data with product warnings/interactions
-4. Results highlight relevant product information for the patient
+3. Preprocessors are applied.
+4. Lenses are applied to match patient data with product warnings/interactions
+5. Results highlight relevant product information for the patient
 
 ## Focusing Relevance
 
@@ -128,14 +106,6 @@ ePIs are matched against patient data to:
 - Show relevant side effects for the patient
 - Demonstrate drug-drug interactions
 
-## Next Steps
-
-- [ ] Download or create ePI sample data
-- [ ] Validate FHIR bundle structure
-- [ ] Add files to this folder
-- [ ] Restart FHIR emulator: `docker-compose restart fhir-emulator`
-- [ ] Test access via http://localhost:3000/fhir/Medication
-
 ---
 
 **Documentation**: FHIR Medication Resources
@@ -144,4 +114,4 @@ ePIs are matched against patient data to:
 
 **Additional Resources**:
 - [EMA Medicines](https://www.ema.europa.eu/en/medicines)
-- [Gravitate-Health ePI Profile](https://www.gravitatehealth.eu/deliverables/)
+- [Gravitate-Health ePI Profile](https://build.fhir.org/ig/hl7-eu/gravitate-health/)

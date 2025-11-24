@@ -279,22 +279,20 @@ The Gravitate-Health focusing manager automatically discovers services using **D
 
  1. Install FHIR lens bundler tool.
 
- 2. Create lens
+ 2. Create lens in the Lenses directory.
 
  3. `lens-selector-file` will automatically verify lens and bundle with valid sibling js file 
 
- 4. Develop lens (either json or js), update ePIs with needed manual annotations
+ 4. Develop lens (modify json and js), update ePIs with needed manual annotations, modify/create IPS as needed.
 
- 4. Test focusing.
-```bash
-# 1. Create a FHIR Library resource and add to Lenses/ folder
-cp my-lens.json Lenses/
+ 5. Test focusing.
+   
+   1. easiest option is to use the focusing inspector (navigate to [http://localhost:4200](http://localhost:4200)),select ePI, preprocessor, IPS, and Lens(es).
+   
+   2. you can also use the swagger UI (navigate to [http://localhost:8888](http://localhost:8888)), set up the focus call as needed.
 
+   3. you can also use curl (or postman, o custom app) to call the service directly
 
-# 3. Test in Focusing Inspector
-# Navigate to http://localhost:4200
-# The lens should now be discoverable
-```
 
 ### 2. Developing a Custom Preprocessor
 
@@ -314,27 +312,6 @@ docker-compose logs -f my-preprocessor
 # http://localhost:8888 or http://localhost:4200
 ```
 
-### 3. Testing End-to-End
-
-```bash
-# 1. Add test patient to Patients/
-cp test-patient.json Patients/
-
-# 2. Add test ePI to ePIs/
-cp test-epi.json ePIs/
-
-# 3. Start the environment
-docker-compose up -d
-
-# 4. Use Focusing Inspector to:
-#    - Load the patient
-#    - Apply preprocessors
-#    - Discover relevant lenses
-#    - View focused results
-
-# 5. Review logs for debugging
-docker-compose logs -f
-```
 
 ## 🐛 Troubleshooting
 
@@ -407,7 +384,7 @@ curl http://localhost:8080/focusing/lenses
 
 ### Get Preprocessor Status
 ```bash
-curl http://localhost:8080/focusing/preprocessors
+curl http://localhost:8080/focusing/preprocessing
 ```
 
 ### Submit Data for Focusing

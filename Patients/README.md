@@ -29,7 +29,7 @@ Patients/
 ## Adding Patient Data
 
 ### Option 1: From Gravitate-Health Samples
-Obtain IPS examples from the [Gravitate-Health FHIR Implementation Guide](https://www.gravitatehealth.eu/deliverables/).
+Obtain IPS examples from the [Gravitate-Health FHIR Implementation Guide](https://build.fhir.org/ig/hl7-eu/gravitate-health/).
 
 ### Option 2: Create Test Data
 Use the FHIR specification to create sample IPS bundles with realistic patient data.
@@ -38,35 +38,11 @@ Use the FHIR specification to create sample IPS bundles with realistic patient d
 Tools like:
 - [FHIR Validator](http://hl7.org/fhir/validator/)
 - [FHIR Forge](https://fire.appliedis.com/)
-- [Postman FHIR collections](https://www.postman.com/gravitatehealth/)
-
-## Validation
-
-Ensure all files are valid FHIR bundles:
-
-```bash
-# Inside the FHIR emulator container
-docker-compose exec fhir-emulator npm run validate -- /data/patients
-```
 
 ## Usage
 
-The FHIR emulator automatically discovers and loads all JSON files in this folder at startup:
+The FHIR emulator automatically discovers and dynamically loads all JSON files in this folder at runtime.
 
-1. Start the environment:
-   ```bash
-   docker-compose up -d
-   ```
-
-2. Verify patients are loaded:
-   ```bash
-   curl http://localhost:3000/fhir/Patient
-   ```
-
-3. Access specific patient:
-   ```bash
-   curl http://localhost:3000/fhir/Patient/patient-001
-   ```
 
 ## IPS Bundle Structure Example
 
@@ -106,16 +82,8 @@ The FHIR emulator automatically discovers and loads all JSON files in this folde
 
 1. Patient data flows from this folder → FHIR Emulator
 2. Focusing Manager queries patient data when processing
-3. Preprocessors enrich patient data
+3. Preprocessors enrich ePIs
 4. Lenses are applied based on patient context
-
-## Next Steps
-
-- [ ] Download or create patient sample data
-- [ ] Validate FHIR bundle structure
-- [ ] Add files to this folder
-- [ ] Restart FHIR emulator: `docker-compose restart fhir-emulator`
-- [ ] Test access via http://localhost:3000/fhir/Patient
 
 ---
 
