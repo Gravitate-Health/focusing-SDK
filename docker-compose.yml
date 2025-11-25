@@ -1,5 +1,3 @@
-version: '3.8'
-
 # Gravitate-Health FOSPS Development Environment
 # A local deployment of the Federated Open Source Platform and Services
 # for developing Lenses and Preprocessors (pluggable components of the focusing mechanism)
@@ -19,8 +17,8 @@ services:
       ENVIRONMENT: standalone
       PREPROCESSING_LABEL_SELECTOR: eu.gravitate-health.fosps.preprocessing=True
       FOCUSING_LABEL_SELECTOR: eu.gravitate-health.fosps.focusing=True
-      FHIR_IPS_URL:
-      FHIR_EPI_URL:
+      FHIR_IPS_URL: https://fhir-emulator:5000/ips/api/fhir
+      FHIR_EPI_URL: https://fhir-emulator:5000/epi/api/fhir
       PROFILE_URL:
     networks:
       - focusing-network
@@ -76,11 +74,11 @@ services:
     image: ghcr.io/gravitate-health/preprocessing-service-mvp2:latest
     environment:
       ENVIRONMENT: dev
-      TERM_SERVER_URL: http://terminology-server:3000
+      TERM_SERVER_URL: http://terminology-service:3000
     networks:
       - focusing-network
     depends_on:
-      - terminology-server
+      - terminology-service
     restart: unless-stopped
     # Service discovery labels - used by focusing manager to detect this preprocessor
     labels:
