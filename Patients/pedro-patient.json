@@ -1,0 +1,53 @@
+{
+    "resourceType": "Patient",
+    "id": "pedro-patient",
+    "meta": {
+        "versionId": "1",
+        "lastUpdated": "2025-10-08T15:24:04.319+00:00",
+        "source": "#311ade19-d34c-49"
+    },
+    "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Age: 42 years. I live alone, single. Electronics store salesperson Smoker since the age of 20 Interests: cultural events and concerts. I enjoy mountain activities, skiing in winter and hiking the rest of the year. Health Conditions HIV (diagnosed with 38 years) Depression</div>"
+    },
+    "extension": [
+        {
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-citizenship",
+            "extension": [
+                {
+                    "url": "code",
+                    "valueCodeableConcept": {
+                        "coding": [
+                            {
+                                "system": "urn:iso:std:iso:3166",
+                                "code": "ES",
+                                "display": "Spain"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "identifier": [
+        {
+            "system": "https://www.gravitatehealth.eu/sid/doc",
+            "value": "Pedro-1"
+        },
+        {
+            "system": "keycloak-id",
+            "value": "fa1d0dce-77ea-4e60-b65c-df9aa571fbae"
+        }
+    ],
+    "active": true,
+    "name": [
+        {
+            "family": "Gravitate",
+            "given": [
+                "Pedro"
+            ]
+        }
+    ],
+    "gender": "male",
+    "birthDate": "1980-10-05"
+}

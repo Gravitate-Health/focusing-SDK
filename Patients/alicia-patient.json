@@ -1,0 +1,53 @@
+{
+    "resourceType": "Patient",
+    "id": "alicia-patient",
+    "meta": {
+        "versionId": "1",
+        "lastUpdated": "2025-10-08T15:24:04.548+00:00",
+        "source": "#d58f9a25-a4a7-44"
+    },
+    "text": {
+        "status": "generated",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Age: 28 years. I live with my boyfriend. PhD Student Interests: I love reading and walking outdoors with my dog. I also love art and photography. Health Conditions: HIV (diagnosed with 25 years) Trigeminal neuralgia Depression Overweight</div>"
+    },
+    "extension": [
+        {
+            "url": "http://hl7.org/fhir/StructureDefinition/patient-citizenship",
+            "extension": [
+                {
+                    "url": "code",
+                    "valueCodeableConcept": {
+                        "coding": [
+                            {
+                                "system": "urn:iso:std:iso:3166",
+                                "code": "ES",
+                                "display": "Spain"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "identifier": [
+        {
+            "system": "https://www.gravitatehealth.eu/sid/doc",
+            "value": "alicia-1"
+        },
+        {
+            "system": "keycloak-id",
+            "value": "96bf3163-9c63-4053-907c-0af7264e5507"
+        }
+    ],
+    "active": true,
+    "name": [
+        {
+            "family": "Gravitate",
+            "given": [
+                "Alicia"
+            ]
+        }
+    ],
+    "gender": "female",
+    "birthDate": "1998-10-05"
+}
