@@ -17,9 +17,9 @@ services:
       ENVIRONMENT: standalone
       PREPROCESSING_LABEL_SELECTOR: eu.gravitate-health.fosps.preprocessing=True
       FOCUSING_LABEL_SELECTOR: eu.gravitate-health.fosps.focusing=True
-      FHIR_IPS_URL: https://fhir-emulator:5000/ips/api/fhir
-      FHIR_EPI_URL: https://fhir-emulator:5000/epi/api/fhir
-      PROFILE_URL:
+      FHIR_IPS_URL: http://fhir-emulator:5000/fhir
+      FHIR_EPI_URL: http://fhir-emulator:5000/fhir
+      PROFILE_URL: http://fhir-emulator:5000/fhir
     networks:
       - focusing-network
     depends_on:
@@ -75,6 +75,7 @@ services:
     environment:
       ENVIRONMENT: dev
       TERM_SERVER_URL: http://terminology-service:3000
+      LOG_LEVEL: INFO
     networks:
       - focusing-network
     depends_on:
@@ -161,7 +162,9 @@ services:
     image: ghcr.io/gravitate-health/focusing-inspector:latest
     environment:
       ENVIRONMENT: dev
-      BACKEND_ENDPOINT: http://localhost:8080
+      BACKEND_ENDPOINT: http://localhost:8080/
+    ports:
+      - "4200:80"
     networks:
       - focusing-network
     depends_on:
