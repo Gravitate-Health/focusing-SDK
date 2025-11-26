@@ -159,8 +159,6 @@ services:
   focusing-inspector:
     container_name: focusing-inspector
     image: ghcr.io/gravitate-health/focusing-inspector:latest
-    ports:
-      - "4200:80"
     environment:
       ENVIRONMENT: dev
       BACKEND_ENDPOINT: http://localhost:8080
@@ -175,8 +173,6 @@ services:
   swagger-ui:
     container_name: swagger-ui
     image: swaggerapi/swagger-ui:latest
-    ports:
-      - "8888:8080"
     environment:
       # Use local openapi.yaml mounted to /openapi.yaml
       URL: /openapi.yaml
@@ -242,10 +238,10 @@ networks:
 # - Preprocessors: eu.gravitate-health.fosps.preprocessing=True
 # - Lens Selectors: eu.gravitate-health.fosps.focusing=True
 #
-# ACCESSING SERVICES FROM HOST:
+# ACCESSING SERVICES FROM HOST (single proxy port 8080):
 # - Focusing Manager API: http://localhost:8080/focusing
-# - Focusing Inspector: http://localhost:4200
-# - Swagger UI: http://localhost:8888
+# - Focusing Inspector: http://localhost:8080/inspector/
+# - Swagger UI: http://localhost:8080/swagger/
 # - Services within network: http://<service-name>:<port>
 #
 # ============================================================================

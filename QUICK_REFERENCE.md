@@ -5,16 +5,16 @@
 ```bash
 cd focusing-sdk
 docker-compose up -d
-open http://localhost:4200  # or use your browser
+open http://localhost:8080/inspector/  # or use your browser
 ```
 
 ## 🌐 Service URLs
 
 | Service | URL | Purpose |
 |---------|-----|---------|
-| **Inspector** | http://localhost:4200 | Interactive testing UI |
-| **Swagger API** | http://localhost:8888 | API documentation |
-| **Focusing Manager** | http://localhost:8080 | Core API |
+| **Inspector** | http://localhost:8080/inspector/ | Interactive testing UI |
+| **Swagger API** | http://localhost:8080/swagger/ | API documentation |
+| **Focusing Manager** | http://localhost:8080/focusing | Core API |
 | **FHIR Server** | http://localhost:3000/fhir | Data endpoints |
 
 ## 📦 Key Services in docker-compose.yml

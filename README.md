@@ -18,7 +18,8 @@ This development environment provides a complete, containerized setup of the Gra
 
 - **Docker** and **Docker Compose** installed
 - At least 8GB RAM available
-- Port availability: 4200, 8080, 8888 (configurable in `docker-compose.yml`)
+ - At least 8GB RAM available
+ - Port availability: 8080 (single proxy port; services are exposed under path prefixes)
 
 ### Starting the Environment
 
@@ -38,8 +39,8 @@ This development environment provides a complete, containerized setup of the Gra
    ```
 
 4. **Access the web interfaces:**
-   - **Focusing Inspector** (Main testing tool): http://localhost:4200
-   - **Swagger UI** (API documentation): http://localhost:8888
+   - **Focusing Inspector** (Main testing tool): http://localhost:8080/inspector/
+   - **Swagger UI** (API documentation): http://localhost:8080/swagger/
    - **Focusing Manager** (Core API): http://localhost:8080/focusing
 
 ### Stopping the Environment
@@ -105,7 +106,13 @@ Contains Gravitate-Health Lenses, which are extensions of the FHIR Library profi
 
 ### Preprocessor Services
 
-Preprocessors are data transformation components that enrich FHIR resources. They're automatically discovered by the focusing manager through Docker labels
+Preprocessors are data transformation components that enrich FHIR resources. They're automatically discovered by the focusing manager through Docker labels.
+
+#### Manual Preprocessor
+- **Container**: `manual-preprocessor`
+- **Purpose**: Accept manual input for testing and validation
+- **Auto-discovery**: Enabled via labels
+- **Capabilities**: `input_validation`, `manual_entry`
 
 #### MVP2 Preprocessor
 - **Container**: `mvp2-preprocessor`
@@ -135,7 +142,7 @@ Lens selectors discover and expose FHIR Library components (Lenses). The focusin
 
 #### Focusing Inspector
 - **Container**: `focusing-inspector`
-- **Port**: 4200
+- **Access**: `http://localhost:8080/inspector/` (served through the nginx proxy)
 - **Purpose**: Web UI for testing and validating the focusing process
 - **Features**: 
   - Interactive lens discovery
@@ -144,7 +151,7 @@ Lens selectors discover and expose FHIR Library components (Lenses). The focusin
 
 #### Swagger UI
 - **Container**: `swagger-ui`
-- **Port**: 8888
+- **Access**: `http://localhost:8080/swagger/` (served through the nginx proxy)
 - **Purpose**: OpenAPI/Swagger documentation and testing
 - **API**: Documents the Focusing Manager's REST API
 - **Features**: Try-it-out testing directly in browser
@@ -287,9 +294,9 @@ The Gravitate-Health focusing manager automatically discovers services using **D
 
  5. Test focusing.
    
-   1. easiest option is to use the focusing inspector (navigate to [http://localhost:4200](http://localhost:4200)),select ePI, preprocessor, IPS, and Lens(es).
+   1. easiest option is to use the focusing inspector (navigate to [http://localhost:8080/inspector](http://localhost:8080/inspector)),select ePI, preprocessor, IPS, and Lens(es).
    
-   2. you can also use the swagger UI (navigate to [http://localhost:8888](http://localhost:8888)), set up the focus call as needed.
+   2. you can also use the swagger UI (navigate to [http://localhost:8080/swagger](http://localhost:8080/swagger)), set up the focus call as needed.
 
    3. you can also use curl (or postman, o custom app) to call the service directly
 
