@@ -11,7 +11,7 @@ services:
   # between preprocessors and lens selectors
   focusing-manager:
     container_name: focusing-manager
-    image: ghcr.io/gravitate-health/focuing-manager:latest
+    image: ghcr.io/gravitate-health/focusing-manager:latest
     environment:
       # Configuration for the focusing manager
       ENVIRONMENT: standalone
@@ -172,7 +172,7 @@ services:
     image: ghcr.io/gravitate-health/focusing-inspector:latest
     environment:
       ENVIRONMENT: dev
-      BACKEND_ENDPOINT: http://localhost:8080/
+      BACKEND_ENDPOINT: http://localhost:8080
     ports:
       - "4200:80"
     networks:
