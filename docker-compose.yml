@@ -165,6 +165,22 @@ services:
   # TESTING & INSPECTION SERVICES
   # ============================================================================
 
+  # Dozzle - Real-time Docker log viewer
+  # Provides a web UI to view logs from all containers
+  dozzle:
+    container_name: dozzle
+    image: amir20/dozzle:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - focusing-network
+    restart: unless-stopped
+    environment:
+      DOZZLE_LEVEL: info
+      DOZZLE_TAILSIZE: 300
+      DOZZLE_FILTER: "name=focusing-*,name=fhir-*,name=mvp2-*,name=clean-*,name=lens-*,name=terminology-*"
+      DOZZLE_BASE: /logs
+
   # Focusing Inspector - Web UI for testing and validating the focusing process
   # Provides interactive testing interface for developers
   focusing-inspector:
@@ -255,6 +271,7 @@ networks:
 # - Focusing Manager API: http://localhost:8080/focusing
 # - Focusing Inspector: http://localhost:8080/inspector/
 # - Swagger UI: http://localhost:8080/swagger/
+# - Dozzle (Log Viewer): http://localhost:8080/logs/
 # - Services within network: http://<service-name>:<port>
 #
 # ============================================================================

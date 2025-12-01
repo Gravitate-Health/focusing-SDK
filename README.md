@@ -41,6 +41,7 @@ This development environment provides a complete, containerized setup of the Gra
 4. **Access the web interfaces:**
    - **Focusing Inspector** (Main testing tool): http://localhost:8080/inspector/
    - **Swagger UI** (API documentation): http://localhost:8080/swagger/
+   - **Dozzle** (Log viewer): http://localhost:8080/logs/
    - **Focusing Manager** (Core API): http://localhost:8080/focusing
 
 ### Stopping the Environment
@@ -156,6 +157,17 @@ Lens selectors discover and expose FHIR Library components (Lenses). The focusin
 - **API**: Documents the Focusing Manager's REST API
 - **Features**: Try-it-out testing directly in browser
 
+#### Dozzle
+- **Container**: `dozzle`
+- **Access**: `http://localhost:8080/logs/` (served through the nginx proxy)
+- **Purpose**: Real-time log viewer for all Docker containers
+- **Features**:
+  - Web-based interface for viewing container logs
+  - Real-time log streaming with WebSocket support
+  - Search and filter logs across containers
+  - Pre-filtered to show focusing-SDK related containers
+  - No CLI needed - inspect logs directly in browser
+
 ## 🛠️ Managing Services
 
 ### View Service Status
@@ -164,6 +176,12 @@ docker-compose ps
 ```
 
 ### View Service Logs
+
+**Web UI (Recommended)**:
+- Navigate to http://localhost:8080/logs/ to view logs in the Dozzle web interface
+- Real-time streaming with search and filtering capabilities
+
+**Command Line**:
 ```bash
 # View logs from all services
 docker-compose logs -f
@@ -244,10 +262,11 @@ To add a lens provider that discovers lenses from a GitHub repository:
    ```
 
 4. **Verify discovery**:
-   - Check Swagger UI: http://localhost:8888
-   - Check Inspector: http://localhost:4200
+   - Check Swagger UI: http://localhost:8080/swagger/
+   - Check Inspector: http://localhost:8080/inspector/
    - Check focusing-manager: http://localhost:8080/focusing/lenses
-   - View logs: `docker-compose logs -f git-lens-provider-example`
+   - View logs in Dozzle: http://localhost:8080/logs/
+   - Or view logs in CLI: `docker-compose logs -f git-lens-provider-example`
 
 ### Adding a New Preprocessor
 
@@ -294,11 +313,13 @@ The Gravitate-Health focusing manager automatically discovers services using **D
 
  5. Test focusing.
    
-   1. easiest option is to use the focusing inspector (navigate to [http://localhost:8080/inspector](http://localhost:8080/inspector)),select ePI, preprocessor, IPS, and Lens(es).
+   1. easiest option is to use the focusing inspector (navigate to [http://localhost:8080/inspector/](http://localhost:8080/inspector/)), select ePI, preprocessor, IPS, and Lens(es).
    
-   2. you can also use the swagger UI (navigate to [http://localhost:8080/swagger](http://localhost:8080/swagger)), set up the focus call as needed.
+   2. you can also use the swagger UI (navigate to [http://localhost:8080/swagger/](http://localhost:8080/swagger/)), set up the focus call as needed.
 
-   3. you can also use curl (or postman, o custom app) to call the service directly
+   3. you can also use curl (or postman, or custom app) to call the service directly
+
+ 6. Monitor logs in real-time using Dozzle at [http://localhost:8080/logs/](http://localhost:8080/logs/)
 
 
 ### 2. Developing a Custom Preprocessor
@@ -313,10 +334,12 @@ The Gravitate-Health focusing manager automatically discovers services using **D
 docker-compose up -d my-preprocessor
 
 # 4. Monitor logs
+# Web UI: http://localhost:8080/logs/
+# Or CLI:
 docker-compose logs -f my-preprocessor
 
 # 5. Test via Swagger UI or Inspector
-# http://localhost:8888 or http://localhost:4200
+# http://localhost:8080/swagger/ or http://localhost:8080/inspector/
 ```
 
 
@@ -401,7 +424,7 @@ curl -X POST http://localhost:8080/focusing/focus \
   -d @patient-bundle.json
 ```
 
-See the **Swagger UI** (http://localhost:8888) for complete API documentation.
+See the **Swagger UI** (http://localhost:8080/swagger/) for complete API documentation.
 
 ## 🚢 Production Considerations
 
