@@ -67,10 +67,10 @@ services:
   # They use labels for automatic discovery by the focusing manager
   # ============================================================================
 
-  # MVP2 Preprocessor - Production-grade preprocessor implementation
+  # Terminology Preprocessor - Production-grade preprocessor implementation
   # Labels identify this service to the focusing manager
-  mvp2-preprocessor:
-    container_name: mvp2-preprocessor
+  terminology-preprocessor:
+    container_name: terminology-preprocessor
     image: ghcr.io/gravitate-health/preprocessing-service-mvp2:latest
     environment:
       ENVIRONMENT: dev
