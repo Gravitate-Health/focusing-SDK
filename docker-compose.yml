@@ -204,7 +204,7 @@ services:
     image: swaggerapi/swagger-ui:latest
     environment:
       # Use local openapi.yaml mounted to /openapi.yaml
-      URL: /openapi.yaml
+      URL: ./openapi.yaml
       SWAGGERUI_DOCEXPANSION: list
       SWAGGERUI_DEFAULT_MODELS_EXPAND_DEPTH: 1
     volumes:
