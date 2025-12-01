@@ -38,10 +38,11 @@ This development environment provides a complete, containerized setup of the Gra
    ```
 
 4. **Access the web interfaces:**
+   - **Landing Page**: http://localhost:8080/ (start here for quick access to all tools)
    - **Focusing Inspector** (Main testing tool): http://localhost:8080/inspector/
    - **Swagger UI** (API documentation): http://localhost:8080/swagger/
    - **Dozzle** (Log viewer): http://localhost:8080/logs/
-   - **Focusing Manager** (Core API): http://localhost:8080/focusing
+   - **Focusing Manager** (Core API): http://localhost:8080/focusing/
 
 ### Stopping the Environment
 
@@ -492,6 +493,7 @@ All services are accessible through a single nginx reverse proxy on port 8080:
 
 | Service | URL | Purpose |
 |---------|-----|---------|
+| **Landing Page** | http://localhost:8080/ | Main menu with quick access to all tools |
 | **Focusing Inspector** | http://localhost:8080/inspector/ | Interactive UI for testing focusing process |
 | **Swagger UI** | http://localhost:8080/swagger/ | API documentation and testing |
 | **Dozzle** | http://localhost:8080/logs/ | Real-time log viewer for all containers |

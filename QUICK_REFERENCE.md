@@ -5,7 +5,7 @@
 ```bash
 cd focusing-sdk
 docker-compose up -d
-open http://localhost:8080/inspector/  # or use your browser
+open http://localhost:8080/  # Main landing page with all tools
 ```
 
 ## 🌐 Service URLs
@@ -14,6 +14,7 @@ All services accessible through **single port 8080** via nginx reverse proxy:
 
 | Service | URL | Purpose |
 |---------|-----|---------|
+| **Landing Page** | http://localhost:8080/ | Main menu with quick access |
 | **Inspector** | http://localhost:8080/inspector/ | Interactive testing UI |
 | **Swagger API** | http://localhost:8080/swagger/ | API documentation |
 | **Dozzle Logs** | http://localhost:8080/logs/ | Real-time log viewer |
