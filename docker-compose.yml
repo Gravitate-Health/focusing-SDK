@@ -167,6 +167,7 @@ services:
 
   # Dozzle - Real-time Docker log viewer
   # Provides a web UI to view logs from all containers
+  # Accessible at http://localhost:8080/logs/ via nginx proxy
   dozzle:
     container_name: dozzle
     image: amir20/dozzle:latest
@@ -182,6 +183,7 @@ services:
 
   # Focusing Inspector - Web UI for testing and validating the focusing process
   # Provides interactive testing interface for developers
+  # Accessible at http://localhost:8080/inspector/ via nginx proxy
   focusing-inspector:
     container_name: focusing-inspector
     image: ghcr.io/gravitate-health/focusing-inspector:latest
@@ -197,6 +199,7 @@ services:
 
   # Swagger UI - API documentation and testing interface
   # Exposes the focusing manager's OpenAPI specification from local openapi.yaml
+  # Accessible at http://localhost:8080/swagger/ via nginx proxy
   swagger-ui:
     container_name: swagger-ui
     image: swaggerapi/swagger-ui:latest
@@ -216,7 +219,12 @@ services:
 # ============================================================================
 # REVERSE PROXY SERVICE
 # ============================================================================
-# Uses nginx to route external requests to internal services
+# Uses nginx to route external requests to internal services on a single port (8080)
+# All web interfaces are accessible through this proxy:
+#   - /focusing/     -> Focusing Manager API
+#   - /inspector/    -> Focusing Inspector UI
+#   - /swagger/      -> Swagger API Documentation
+#   - /logs/         -> Dozzle Log Viewer
 # No need to modify this unless you want custom routing rules
   nginx-proxy:
     container_name: nginx-proxy
@@ -251,8 +259,10 @@ networks:
 #   docker-compose up -d
 #
 # VIEWING LOGS:
-# docker-compose logs -f <service-name>
-# Example: docker-compose logs -f focusing-manager
+# Web UI (Recommended): http://localhost:8080/logs/ - Real-time log viewer with search/filter
+# Command Line:
+#   docker-compose logs -f <service-name>
+#   Example: docker-compose logs -f focusing-manager
 #
 # REBUILDING IMAGES:
 # docker-compose build --no-cache

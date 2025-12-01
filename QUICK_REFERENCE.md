@@ -10,24 +10,32 @@ open http://localhost:8080/inspector/  # or use your browser
 
 ## 🌐 Service URLs
 
+All services accessible through **single port 8080** via nginx reverse proxy:
+
 | Service | URL | Purpose |
 |---------|-----|---------|
 | **Inspector** | http://localhost:8080/inspector/ | Interactive testing UI |
 | **Swagger API** | http://localhost:8080/swagger/ | API documentation |
-| **Focusing Manager** | http://localhost:8080/focusing | Core API |
-| **FHIR Server** | http://localhost:3000/fhir | Data endpoints |
+| **Dozzle Logs** | http://localhost:8080/logs/ | Real-time log viewer |
+| **Focusing Manager** | http://localhost:8080/focusing/ | Core API |
+| **FHIR ePI** | http://localhost:8080/epi/api/fhir/ | Product information |
+| **FHIR IPS** | http://localhost:8080/ips/api/fhir/ | Patient summaries |
 
 ## 📦 Key Services in docker-compose.yml
 
 ```
-focusing-manager          - Central orchestration
-fhir-emulator            - Patient & product data
-manual-preprocessor      - Manual test input (auto-discovered)
-mvp2-preprocessor        - Advanced preprocessing (auto-discovered)
-folder-lens-provider     - Local lens discovery (auto-discovered)
-git-lens-provider        - GitHub lens discovery (commented, enable as needed)
-focusing-inspector       - Web testing UI
-swagger-ui              - API documentation
+nginx-proxy                      - Reverse proxy (exposes all services on port 8080)
+focusing-manager                 - Central orchestration
+fhir-emulator                    - Patient & product data
+terminology-service              - FHIR terminology server
+terminology-preprocessor         - Production preprocessing (auto-discovered)
+clean-preprocessor               - Cleaning preprocessing (auto-discovered)
+lens-selector-file               - Local lens discovery (auto-discovered)
+conditions-git-lens-selector     - GitHub conditions lens (auto-discovered)
+pregnancy-git-lens-selector      - GitHub pregnancy lens (auto-discovered)
+focusing-inspector               - Web testing UI (proxied at /inspector/)
+swagger-ui                       - API documentation (proxied at /swagger/)
+dozzle                           - Log viewer (proxied at /logs/)
 ```
 
 ## 🛠️ Common Commands
@@ -43,6 +51,10 @@ docker-compose restart <svc>   # Restart specific service
 
 ### Logs & Debugging
 ```bash
+# Web UI (Recommended)
+open http://localhost:8080/logs/          # Dozzle - real-time log viewer
+
+# Command Line
 docker-compose logs -f                    # All logs (follow)
 docker-compose logs -f focusing-manager   # Specific service
 docker-compose logs --tail=50 fhir-emulator  # Last 50 lines

@@ -18,8 +18,7 @@ This development environment provides a complete, containerized setup of the Gra
 
 - **Docker** and **Docker Compose** installed
 - At least 8GB RAM available
- - At least 8GB RAM available
- - Port availability: 8080 (single proxy port; services are exposed under path prefixes)
+- Port availability: **8080** (single proxy port - all services accessible via path-based routing)
 
 ### Starting the Environment
 
@@ -60,7 +59,10 @@ docker-compose down -v
 ```
 focusing-sdk/
 ├── docker-compose.yml      # Main service orchestration configuration
+├── openapi.yaml            # OpenAPI specification for the Focusing Manager API
 ├── README.md               # This file
+├── nginx/
+│   └── default.conf        # Nginx reverse proxy configuration
 ├── Patients/               # FHIR Patient Summaries
 │   └── (Add FHIR IPS bundles here)
 ├── ePIs/                   # Electronic Product Information
@@ -481,5 +483,18 @@ For questions about:
 
 ---
 
-**Last Updated**: November 2025
+**Last Updated**: December 2025
 **Gravitate-Health FOSPS SDK v1.0**
+
+## 🔗 Service Access Summary
+
+All services are accessible through a single nginx reverse proxy on port 8080:
+
+| Service | URL | Purpose |
+|---------|-----|---------|
+| **Focusing Inspector** | http://localhost:8080/inspector/ | Interactive UI for testing focusing process |
+| **Swagger UI** | http://localhost:8080/swagger/ | API documentation and testing |
+| **Dozzle** | http://localhost:8080/logs/ | Real-time log viewer for all containers |
+| **Focusing Manager API** | http://localhost:8080/focusing/ | Core focusing service API |
+| **FHIR Emulator (ePI)** | http://localhost:8080/epi/api/fhir/ | Electronic product information endpoint |
+| **FHIR Emulator (IPS)** | http://localhost:8080/ips/api/fhir/ | Patient summary endpoint |
