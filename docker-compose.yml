@@ -188,8 +188,7 @@ services:
     environment:
       ENVIRONMENT: dev
       BACKEND_ENDPOINT: http://localhost:8080
-    ports:
-      - "4200:80"
+      BASE_HREF: /inspector/
     networks:
       - focusing-network
     depends_on:
