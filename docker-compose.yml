@@ -177,7 +177,6 @@ services:
     restart: unless-stopped
     environment:
       DOZZLE_LEVEL: info
-      DOZZLE_TAILSIZE: 300
       DOZZLE_FILTER: "name=focusing-*,name=fhir-*,name=mvp2-*,name=clean-*,name=lens-*,name=terminology-*"
       DOZZLE_BASE: /logs
 
