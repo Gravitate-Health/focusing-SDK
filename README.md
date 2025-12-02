@@ -24,6 +24,7 @@ This development environment provides a complete, containerized setup of the Gra
 
 1. **Clone or navigate to this repository:**
    ```bash
+   git clone https://github.com/Gravitate-Health/focusing-SDK.git
    cd focusing-sdk
    ```
 
