@@ -33,6 +33,12 @@ This development environment provides a complete, containerized setup of the Gra
    docker-compose up -d
    ```
 
+   > **Note for Mac users with ARM processors (M1/M2/M3):**  
+   > If you encounter platform compatibility issues, run with the platform override:
+   > ```bash
+   > DOCKER_DEFAULT_PLATFORM=linux/amd64 docker-compose up -d
+   > ```
+
 3. **Verify services are running:**
    ```bash
    docker-compose ps
