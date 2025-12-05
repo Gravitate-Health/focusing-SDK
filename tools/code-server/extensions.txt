@@ -1,0 +1,13 @@
+# List VS Code marketplace extension IDs to install at image build time.
+# Lines starting with '#' are ignored. Add or remove IDs as desired.
+# Recommended: JSON & JavaScript editing helpers
+redhat.vscode-yaml
+esbenp.prettier-vscode
+dbaeumer.vscode-eslint
+
+# FHIR / FSH editors - replace these placeholders with actual marketplace IDs
+# Example (replace with the correct publisher.extension id):
+# firely.fhir-language-support
+# publisher.fsh-language
+
+# If you know specific FHIR or FSH extension IDs, add them here (one per line).

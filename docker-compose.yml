@@ -237,11 +237,34 @@ services:
     depends_on:
       - focusing-manager
       - fhir-emulator
+      - code-server
     restart: unless-stopped
     volumes:
       - ./web_proxy/Caddyfile:/etc/caddy/Caddyfile:ro
       - ./web_proxy/index.html:/usr/share/caddy/index.html:ro
       - ./web_proxy/style.css:/usr/share/caddy/style.css:ro
+
+  # ============================================================================
+  # Web-based IDE (code-server)
+  # Accessible at http://localhost:8080/code/
+  code-server:
+    container_name: code-server
+    build:
+      context: ./tools/code-server
+    networks:
+      - focusing-network
+    environment:
+      # Set host UID/GID for linuxserver image file ownership (adjust if needed)
+      PUID: 1000
+      PGID: 1000
+    volumes:
+      # Ensure FHIR data folders are directly available in the workspace
+      - ./ePIs:/config/workspace/ePIs
+      - ./Patients:/config/workspace/Patients
+      - ./Lenses:/config/workspace/Lenses
+      # Persist code-server configuration across rebuilds
+      - ./tools/code-server/config:/config
+    restart: unless-stopped
 
 networks:
   focusing-network:

@@ -48,8 +48,9 @@ This development environment provides a complete, containerized setup of the Gra
    - **Landing Page**: http://localhost:8080/ (start here for quick access to all tools)
    - **Focusing Inspector** (Main testing tool): http://localhost:8080/inspector/
    - **Swagger UI** (API documentation): http://localhost:8080/swagger/
-   - **Dozzle** (Log viewer): http://localhost:8080/logs/
-   - **Focusing Manager** (Core API): http://localhost:8080/focusing/
+  - **Dozzle** (Log viewer): http://localhost:8080/logs/
+  - **Web IDE (code-server)**: http://localhost:8080/code/ (browser-based VS Code, includes SUSHI for FSH compilation)
+  - **Focusing Manager** (Core API): http://localhost:8080/focusing/
 
 ### Stopping the Environment
 

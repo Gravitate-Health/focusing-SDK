@@ -18,6 +18,7 @@ All services accessible through **single port 8080** via the bundled Caddy rever
 | **Inspector** | http://localhost:8080/inspector/ | Interactive testing UI |
 | **Swagger API** | http://localhost:8080/swagger/ | API documentation |
 | **Dozzle Logs** | http://localhost:8080/logs/ | Real-time log viewer |
+| **Web IDE (code-server)** | http://localhost:8080/code/ | Browser-based VS Code (preloaded with SUSHI) |
 | **Focusing Manager** | http://localhost:8080/focusing/ | Core API |
 | **FHIR ePI** | http://localhost:8080/epi/api/fhir/ | Product information |
 | **FHIR IPS** | http://localhost:8080/ips/api/fhir/ | Patient summaries |
