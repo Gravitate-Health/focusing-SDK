@@ -10,7 +10,7 @@ open http://localhost:8080/  # Main landing page with all tools
 
 ## 🌐 Service URLs
 
-All services accessible through **single port 8080** via nginx reverse proxy:
+All services accessible through **single port 8080** via the bundled Caddy reverse proxy:
 
 | Service | URL | Purpose |
 |---------|-----|---------|
@@ -25,7 +25,7 @@ All services accessible through **single port 8080** via nginx reverse proxy:
 ## 📦 Key Services in docker-compose.yml
 
 ```
-nginx-proxy                      - Reverse proxy (exposes all services on port 8080)
+caddy                            - Reverse proxy (exposes all services on port 8080)
 focusing-manager                 - Central orchestration
 fhir-emulator                    - Patient & product data
 terminology-service              - FHIR terminology server

@@ -70,7 +70,7 @@ focusing-sdk/
 ├── openapi.yaml            # OpenAPI specification for the Focusing Manager API
 ├── README.md               # This file
 ├── nginx/
-│   └── default.conf        # Nginx reverse proxy configuration
+│   └── Caddyfile           # Caddy reverse proxy configuration (was nginx/default.conf)
 ├── Patients/               # FHIR Patient Summaries
 │   └── (Add FHIR IPS bundles here)
 ├── ePIs/                   # Electronic Product Information
@@ -153,7 +153,7 @@ Lens selectors discover and expose FHIR Library components (Lenses). The focusin
 
 #### Focusing Inspector
 - **Container**: `focusing-inspector`
-- **Access**: `http://localhost:8080/inspector/` (served through the nginx proxy)
+- **Access**: `http://localhost:8080/inspector/` (served through the proxy - Caddy)
 - **Purpose**: Web UI for testing and validating the focusing process
 - **Features**: 
   - Interactive lens discovery
@@ -162,14 +162,14 @@ Lens selectors discover and expose FHIR Library components (Lenses). The focusin
 
 #### Swagger UI
 - **Container**: `swagger-ui`
-- **Access**: `http://localhost:8080/swagger/` (served through the nginx proxy)
+- **Access**: `http://localhost:8080/swagger/` (served through the proxy - Caddy)
 - **Purpose**: OpenAPI/Swagger documentation and testing
 - **API**: Documents the Focusing Manager's REST API
 - **Features**: Try-it-out testing directly in browser
 
 #### Dozzle
 - **Container**: `dozzle`
-- **Access**: `http://localhost:8080/logs/` (served through the nginx proxy)
+- **Access**: `http://localhost:8080/logs/` (served through the proxy - Caddy)
 - **Purpose**: Real-time log viewer for all Docker containers
 - **Features**:
   - Web-based interface for viewing container logs
@@ -447,7 +447,7 @@ This setup is designed for **development only**. For production deployments:
 - Implement monitoring and logging infrastructure
 - Use proper secret management for credentials
 - Set up CI/CD pipelines for image building
-- Do not use `fhir-emulator`or `nginx` these components are specific for this SDK.
+-- Do not use `fhir-emulator` or the bundled reverse proxy (Caddy) in production — these components are specific for this SDK.
 
 ## 📖 Additional Resources
 
@@ -496,7 +496,7 @@ For questions about:
 
 ## 🔗 Service Access Summary
 
-All services are accessible through a single nginx reverse proxy on port 8080:
+All services are accessible through a single Caddy reverse proxy on port 8080:
 
 | Service | URL | Purpose |
 |---------|-----|---------|

@@ -1,0 +1,37 @@
+
+:80 {
+  # Serve static landing page
+  root * /usr/share/caddy
+  file_server
+
+  # Focusing Manager (strip /focusing/ prefix)
+  handle_path /focusing/* {
+    reverse_proxy focusing-manager:3000
+  }
+
+  # FHIR Emulator mappings (rewrite to /fhir/*)
+  handle_path /epi/api/fhir/* {
+    rewrite * /fhir{path}
+    reverse_proxy fhir-emulator:5000
+  }
+
+  handle_path /ips/api/fhir/* {
+    rewrite * /fhir{path}
+    reverse_proxy fhir-emulator:5000
+  }
+
+  # Inspector UI
+  handle_path /inspector/* {
+    reverse_proxy focusing-inspector:80
+  }
+
+  # Swagger UI
+  handle_path /swagger/* {
+    reverse_proxy swagger-ui:8080
+  }
+
+  # Dozzle logs (Dozzle is configured with DOZZLE_BASE=/logs, so do NOT strip the prefix)
+  handle /logs/* {
+    reverse_proxy dozzle:8080
+  }
+}
