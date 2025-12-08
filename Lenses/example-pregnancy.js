@@ -119,10 +119,10 @@ let enhance = async () => {
             if (gender != "female" || age >= 60 || age < 14) {
                 console.log("Patient is not of childbearing age");
                 pregnancyStatus.childbearingAge = false;
-                enhanceTag = "collapsed";
+              
             } else {
                 pregnancyStatus.childbearingAge = true;
-                enhanceTag = "info";
+              
             }
         }
     });
@@ -225,7 +225,7 @@ function getExplanation(lang) {
     if (pregnancyStatus.pregnant) return languageDict[lang].pregnant;
     if (pregnancyStatus.breastfeeding) return languageDict[lang].breastfeeding;
     if (pregnancyStatus.childbearingAge) return languageDict[lang].childbearing;
-    return "";
+    return languageDict[lang].other;
 }
 
 // --- Exported API ---
