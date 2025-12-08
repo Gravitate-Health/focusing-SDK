@@ -122,7 +122,7 @@ let enhance = async () => {
                 enhanceTag = "collapsed";
             } else {
                 pregnancyStatus.childbearingAge = true;
-                enhanceTag = "highlight";
+                enhanceTag = "info";
             }
         }
     });
