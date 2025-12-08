@@ -231,6 +231,7 @@ services:
     container_name: caddy
     image: caddy:2-alpine
     ports:
+    # change this if 8080 is not possible
       - "8080:80"
     networks:
       - focusing-network
