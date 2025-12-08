@@ -8,25 +8,29 @@ const languageDict = {
         childbearing: "You are seeing this because you are of childbearing age.",
         pregnant: "You are seeing this because you are pregnant.",
         breastfeeding: "You are seeing this because you are breastfeeding.",
-        consult: "If you are pregnant, breastfeeding, think you may be pregnant, or plan to have a baby, consult your doctor or pharmacist before using this medicine."
+        consult: "If you are pregnant, breastfeeding, think you may be pregnant, or plan to have a baby, consult your doctor or pharmacist before using this medicine.",
+        other: "Pregnancy and breastfeeding information was collapsed since it isnt of important to you."
     },
     es: {
         childbearing: "Ves esto porque estás en edad fértil.",
         pregnant: "Ves esto porque estás embarazada.",
         breastfeeding: "Ves esto porque estás amamantando.",
-        consult: "Si está embarazada, amamantando, cree que puede estar embarazada o planea tener un bebé, consulte a su médico o farmacéutico antes de usar este medicamento."
+        consult: "Si está embarazada, amamantando, cree que puede estar embarazada o planea tener un bebé, consulte a su médico o farmacéutico antes de usar este medicamento.",
+        other: "La información sobre el embarazo y la lactancia se ha colapsado ya que no es importante para usted."
     },
     pt: {
         childbearing: "Você está vendo isso porque está em idade fértil.",
         pregnant: "Você está vendo isso porque está grávida.",
         breastfeeding: "Você está vendo isso porque está amamentando.",
-        consult: "Se estiver grávida, amamentando, acha que pode estar grávida ou planeja ter um bebê, consulte seu médico ou farmacêutico antes de usar este medicamento."
+        consult: "Se estiver grávida, amamentando, acha que pode estar grávida ou planeja ter um bebé, consulte seu médico ou farmacêutico antes de usar este medicamento.",
+        other: "As informações sobre gravidez e amamentação foram recolhidas, pois não são importantes para você."
     },
     da: {
         childbearing: "Du ser dette, fordi du er i den fødedygtige alder.",
         pregnant: "Du ser dette, fordi du er gravid.",
         breastfeeding: "Du ser dette, fordi du ammer.",
-        consult: "Hvis du er gravid, ammer, tror du kan være gravid eller planlægger at få et barn, skal du kontakte din læge eller apotek, før du bruger dette lægemiddel."
+        consult: "Hvis du er gravid, ammer, tror du kan være gravid eller planlægger at få et barn, skal du kontakte din læge eller apotek, før du bruger dette lægemiddel.",
+        other: "Oplysninger om graviditet og amning blev skjult, da de ikke er vigtige for dig."
     }
 };
 

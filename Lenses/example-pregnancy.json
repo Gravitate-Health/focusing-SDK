@@ -1,6 +1,6 @@
 {
   "resourceType": "Library",
-  "id": "pregnancy-lens",
+  "id": "example-pregnancy-lens",
   "meta": {
     "profile": [
       "http://hl7.eu/fhir/ig/gravitate-health/StructureDefinition/lens"
@@ -23,11 +23,11 @@
   "identifier": [
     {
       "system": "http://gravitate-health.lst.tfo.upm.es",
-      "value": "pregnancy-lens"
+      "value": "example-pregnancy-lens"
     }
   ],
-  "version": "0.0.1",
-  "name": "Pregnancy lens",
+  "version": "0.0.0",
+  "name": "Example-Pregnancy-lens",
   "_name": {
     "extension": [
       {
@@ -39,7 +39,7 @@
           },
           {
             "url": "content",
-            "valueString": "Lente para el embarazo"
+            "valueString": "Exemplo Lente para el embarazo"
           }
         ]
       },
@@ -52,7 +52,7 @@
           },
           {
             "url": "content",
-            "valueString": "Lente para a gravidez"
+            "valueString": "Exemplo Lente para a gravidez"
           }
         ]
       },
@@ -71,7 +71,7 @@
       }
     ]
   },
-  "title": "pregnancy-lens",
+  "title": "example-pregnancy-lens",
   "_title": {
     "extension": [
       {
