@@ -153,6 +153,7 @@ services:
     image: ghcr.io/gravitate-health/lens-selector-git:latest
     environment:
       GIT_REPO_URL: https://github.com/joofio/gh-questionnaire-lens.git
+      GIT_BRANCH: main
       CACHE_TTL_MINUTES: 10 
     networks:
       - focusing-network
