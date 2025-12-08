@@ -148,11 +148,11 @@ services:
     labels:
        eu.gravitate-health.fosps.focusing: True
 
-  pregnancy-git-lens-selector:
-    container_name: pregnancy-git-lens-selector
+  questionnaire-git-lens-selector:
+    container_name: questionnaire-git-lens-selector
     image: ghcr.io/gravitate-health/lens-selector-git:latest
     environment:
-      GIT_REPO_URL: https://github.com/Gravitate-Health/pregnancy-lens.git
+      GIT_REPO_URL: https://github.com/joofio/gh-questionnaire-lens.git
       CACHE_TTL_MINUTES: 10 
     networks:
       - focusing-network
