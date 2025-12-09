@@ -20,6 +20,18 @@ This development environment provides a complete, containerized setup of the Gra
 - At least 8GB RAM available
 - Port availability: **8080** (single proxy port - all services accessible via path-based routing)
 
+### ⚠️ Central Log Collection Notice
+
+**By default, this SDK ships logs from the `focusing-manager` container to a central Gravitate-Health logging server** (`logs.gravitatehealth.lst.tfo.upm.es`) for monitoring and debugging purposes. This helps us improve the platform and provide support.
+
+**To opt-out of central log collection:**
+
+1. Open `docker-compose.yml`
+2. Comment out or remove the `promtail` service section (lines starting with `promtail:`)
+3. Restart the environment: `docker-compose down && docker-compose up -d`
+
+**Note**: Local log viewing via Dozzle (http://localhost:8080/logs/) will continue to work regardless of this setting - it reads logs directly from your local Docker daemon.
+
 ### Starting the Environment
 
 1. **Clone or navigate to this repository:**

@@ -271,6 +271,9 @@ services:
 # ============================================================================
 # Log collection 
 # ============================================================================  
+# Promtail - Collects logs from Docker containers and ships to Loki
+# Configured to monitor focusing-manager logs only
+# id you don't want log collection, comment out or delete this section
   promtail:
     image: grafana/promtail:latest
     container_name: promtail
