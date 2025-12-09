@@ -179,7 +179,7 @@ services:
     restart: unless-stopped
     environment:
       DOZZLE_LEVEL: info
-      DOZZLE_FILTER: "name=focusing-*,name=fhir-*,name=mvp2-*,name=clean-*,name=lens-*,name=terminology-*"
+      DOZZLE_FILTER: "name=focusing-*,name=fhir-*,name=*-preprocessor,name=*-lens-selector,name=lens-*,name=terminology-*"
       DOZZLE_BASE: /logs
 
   # Focusing Inspector - Web UI for testing and validating the focusing process
@@ -268,6 +268,20 @@ services:
       - ./tools/code-server/config:/config
     restart: unless-stopped
 
+# ============================================================================
+# Log collection 
+# ============================================================================  
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./tools/promtail-config.yaml:/etc/promtail/config.yaml
+    command: -config.file=/etc/promtail/config.yaml
+    restart: unless-stopped
+    depends_on:
+      - focusing-manager
 networks:
   focusing-network:
     driver: bridge
