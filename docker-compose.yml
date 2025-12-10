@@ -96,15 +96,6 @@ services:
       eu.gravitate-health.fosps.preprocessing: True
 
 
-
-  test-preprocessor:
-    container_name: joao-test-preprocessor
-    image: joao-preprocessor-test
-    networks:
-      - focusing-network
-    restart: unless-stopped
-    labels:
-      eu.gravitate-health.fosps.preprocessing: True
   # Preprocessor example - Use as a template for building custom preprocessors
   # Labels identify this service to the focusing manager
   # my-preprocessor:
