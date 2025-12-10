@@ -1,7 +1,7 @@
 openapi: "3.0.1"
 info:
   title: Gravitate Health Focusing API Interface
-  version: MVP2
+  version: MVP4
   description: Gravitate Health focusing. Preprocessing and lens selection
   contact: {}
 servers:
