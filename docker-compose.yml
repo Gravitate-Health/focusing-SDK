@@ -71,7 +71,7 @@ services:
   # Labels identify this service to the focusing manager
   terminology-preprocessor:
     container_name: terminology-preprocessor
-    image: ghcr.io/gravitate-health/preprocessing-service-mvp2:latest
+    image: ghcr.io/gravitate-health/preprocessing-service-terminology:latest
     environment:
       ENVIRONMENT: dev
       TERM_SERVER_URL: http://terminology-service:3000
