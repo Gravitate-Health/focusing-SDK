@@ -133,34 +133,39 @@ services:
        eu.gravitate-health.fosps.focusing: True
 
   # Git-Based Lens Selectors
-  # Uncomment and configure to enable
-  # NOTE: Configure as needed for your specific lens repositories, comment out or delete if not needed
-  conditions-git-lens-selector:
-    container_name: conditions-git-lens-selector
+  # comment this to disable the official lenses, or use as a template for pulling from other repositories.
+  official-lenses-selector:
+    container_name: official-lenses-selector
     image: ghcr.io/gravitate-health/lens-selector-git:latest
     environment:
-      # you can modify these variables to point to your development lens repository
-      GIT_REPO_URL: https://github.com/Gravitate-Health/conditions-lens.git
-      GIT_BRANCH: main
-      CACHE_TTL_MINUTES: 10 # lower this if repo is actively developing lenses
+      REPOS_CONFIG: https://raw.githubusercontent.com/Gravitate-Health/gravitate-health.github.io/refs/heads/main/lenses.oficial.json
+      CACHE_TTL_MINUTES: 60 
     networks:
       - focusing-network
     restart: unless-stopped
     labels:
        eu.gravitate-health.fosps.focusing: True
 
-  questionnaire-git-lens-selector:
-    container_name: questionnaire-git-lens-selector
-    image: ghcr.io/gravitate-health/lens-selector-git:latest
-    environment:
-      GIT_REPO_URL: https://github.com/joofio/gh-questionnaire-lens.git
-      GIT_BRANCH: main
-      CACHE_TTL_MINUTES: 10 
-    networks:
-      - focusing-network
-    restart: unless-stopped
-    labels:
-      eu.gravitate-health.fosps.focusing: True
+  # More Git-Based Lens Selectors
+  # Uncomment and configure to enable lenses from additional repositories
+  # NOTE: Example for a custom lens repository 
+  #    - update at least GIT_REPO_URL and GIT_BRANCH as needed 
+  #    - you can run multiple instances of the git-based selector to pull from different repositories, just ensure each has a unique container_name and service name
+  #    - adjust CACHE_TTL_MINUTES based on how actively the repository is developing lenses (lower for active development, higher for stable repositories, 0 to disable caching but not recommended for production)
+  #    - you may also update the service name and container_name to something more descriptive of the repository being pulled from
+
+  # questionnaire-git-lens-selector:
+  #   container_name: questionnaire-git-lens-selector
+  #   image: ghcr.io/gravitate-health/lens-selector-git:latest
+  #   environment:
+  #     GIT_REPO_URL: https://github.com/joofio/gh-questionnaire-lens.git
+  #     GIT_BRANCH: main
+  #     CACHE_TTL_MINUTES: 10 # lower this if repo is actively developing lenses, 0 to disable caching and always pull latest changes (not recommended for production)
+  #   networks:
+  #     - focusing-network
+  #   restart: unless-stopped
+  #   labels:
+  #     eu.gravitate-health.fosps.focusing: True
 
 
   # ============================================================================
@@ -180,7 +185,7 @@ services:
     restart: unless-stopped
     environment:
       DOZZLE_LEVEL: info
-      DOZZLE_FILTER: "name=focusing-,name=fhir-,name=preprocessor,name=lens-selector,name=lens-,name=terminology-"
+      DOZZLE_FILTER: "name=focusing-,name=fhir-,name=preprocessor,name=*lens-selector*,name=lens-,name=terminology-"
       DOZZLE_BASE: /logs
 
   # Focusing Inspector - Web UI for testing and validating the focusing process
