@@ -19,7 +19,7 @@ services:
       FOCUSING_LABEL_SELECTOR: eu.gravitate-health.fosps.focusing=True
       FHIR_IPS_URL: http://fhir-emulator:5000/fhir
       FHIR_EPI_URL: http://fhir-emulator:5000/fhir
-      PROFILE_URL: http://fhir-emulator:5000/fhir
+      PERSONA_VECTOR_URL: http://fhir-emulator:5000/fhir
     networks:
       - focusing-network
     depends_on:
